@@ -1,0 +1,12 @@
+# Locking down network access and only allowing necessary access using networkpolicies
+# this policy denies all access in and out of the of the namespace ewonda
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namesapce: ewonda
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress # incomeing traffic
+    - Egress # outgoing traffic
