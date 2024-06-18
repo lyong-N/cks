@@ -1,0 +1,16 @@
+# To check communication b/w pods
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: ewonda
+  labels:
+    app: client
+spec:
+  containers:
+    - name: busybox
+      image: radial/busyboxplus:curl
+      command: ["sh", "-c", "while true; do curl 192.168.32.65; sleep 5; done"]
+# ip is of the pod you want to communicate with
+
+# k logs -n ewonda client
