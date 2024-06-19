@@ -6,7 +6,7 @@ metadata:
   name: default-deny-all
   namesapce: ewonda
 spec:
-  podSelector: {}
+  podSelector: {} # empty podSelector makes sure all pods in the ns are covered
   policyTypes:
     - Ingress # incomeing traffic
     - Egress # outgoing traffic
