@@ -1,0 +1,97 @@
+NetworkPolicies could be of three types
+
+1. podSelector
+2. namespace, and
+3. ipBlock
+
+The spec section in NetworkPolicy is very Important
+
+As best practice is good to create Default Deny NetworkPolicy then add on it to allow traffic
+
+Example:
+
+kubectl run frontend --image=nginx
+kubectl expose pod frontend --port 80
+kuectl run backend --image=nginx
+kubectl expose pod backend --port 80
+k get pod, svc
+k exec frontend -- curl backend
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+name: default-deny-all
+spec:
+podSelector: {}
+policyTypes:
+
+- Ingress
+- Egress
+
+Frontend to backend (Egress)
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+name: frontend
+namespace: default
+spec:
+podSelector:
+matchLabels:
+run: frontend
+policyTypes:
+
+- Egress
+  egress:
+- to:
+- podSelector:
+  matchLabels:
+  run: backend
+
+cp frontend.yaml backend.yaml
+
+backend to frontend (Egress)
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+name: backend
+namespace: default
+spec:
+podSelector:
+matchLabels:
+run: backend
+policyTypes:
+
+- Ingress
+  ingress:
+- from:
+- podSelector:
+  matchLabels:
+  run: frontend
+
+to check connectivity, use IP address
+
+if you want to use DNS,
+create this pod
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+name: deny
+namespace: default
+spec:
+podSelector: {}
+policyTypes:
+
+- Egress
+- Ingress
+  egress:
+- to:
+  ports:
+  - port: 53
+    protocol: TCP
+  - port: 53
+    protocal: UDP
+
+**\*\*** Namespaces always work with labels**\***
