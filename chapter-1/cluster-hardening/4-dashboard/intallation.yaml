@@ -1,0 +1,4 @@
+# How to install K8s dashboard in Kubernetes: https://github.com/kubernetes/dashboard
+#First Install Helm in your cluster
+# Try this it works:
+#kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.4/aio/deploy/recommended.yaml
